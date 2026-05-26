@@ -10,7 +10,7 @@ This project allows users to browse products, manage cart and wishlist, place or
 
 ## Frontend
 - React + Vite
-- Bootstrap
+- Tailwind css
 - React Router DOM
 - Axios
 
