@@ -1,6 +1,7 @@
 package com.e_commerce.backend.service;
 
 
+import com.e_commerce.backend.dto.AuthResponse;
 import com.e_commerce.backend.dto.LoginRequest;
 import com.e_commerce.backend.dto.RegisterRequest;
 import com.e_commerce.backend.entity.User;
@@ -18,22 +19,37 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request){
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        return jwtUtil.generatedToken(user.getEmail());
+        return new AuthResponse(
+                "Register successful",
+                user.getName(),
+                user.getEmail(),
+                jwtUtil.generatedToken(user.getEmail())
+        );
     }
-    public String login(String email ,String password){
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    public AuthResponse login(String email ,String password){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
         boolean isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isPasswordMatch) {
-            throw new RuntimeException("Invalid password");
+            throw new RuntimeException("Invalid email or password");
         }
-        return jwtUtil.generatedToken(user.getEmail());
+        return new AuthResponse(
+                "Login successful",
+                user.getName(),
+                user.getEmail(),
+                jwtUtil.generatedToken(user.getEmail())
+        );
     }
 
 

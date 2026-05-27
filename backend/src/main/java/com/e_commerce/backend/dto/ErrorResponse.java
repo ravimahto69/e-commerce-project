@@ -1,6 +1,5 @@
 package com.e_commerce.backend.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AuthResponse {
+public class ErrorResponse {
     private String message;
-    private String name;
-    private String email;
-    private String token;
 }

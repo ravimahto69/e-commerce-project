@@ -5,6 +5,7 @@ import com.e_commerce.backend.entity.Product;
 import com.e_commerce.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
     @GetMapping("/{id}")
-    public Product getProductById(Long id) {
+    public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 }
