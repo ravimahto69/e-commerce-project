@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,7 +23,8 @@ public class ProductController {
         return productService.getAllProducts();
     }
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
     }
 }

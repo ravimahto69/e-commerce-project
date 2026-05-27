@@ -7,6 +7,8 @@ import com.e_commerce.backend.dto.RegisterRequest;
 import com.e_commerce.backend.entity.User;
 import com.e_commerce.backend.repository.UserRepository;
 import com.e_commerce.backend.security.JwtUtil;
+import com.e_commerce.backend.exception.DuplicateEmailException;
+import com.e_commerce.backend.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new DuplicateEmailException("Email already exists");
         }
 
         User user = new User();
@@ -38,11 +40,11 @@ public class AuthService {
     }
     public AuthResponse login(String email ,String password){
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+            .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 
         boolean isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
         if (!isPasswordMatch) {
-            throw new RuntimeException("Invalid email or password");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
         return new AuthResponse(
                 "Login successful",

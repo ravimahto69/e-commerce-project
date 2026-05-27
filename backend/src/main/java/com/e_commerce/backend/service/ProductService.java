@@ -3,6 +3,7 @@ package com.e_commerce.backend.service;
 
 import com.e_commerce.backend.entity.Product;
 import com.e_commerce.backend.repository.ProductRepository;
+import com.e_commerce.backend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class ProductService {
         return productRepository.findAll();
     }
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
     }
 }

@@ -11,4 +11,8 @@ import lombok.Setter;
 @Setter
 public class ErrorResponse {
     private String message;
+    private String errorCode;
+    private int status;
+    private String path;
+    private String timestamp;
 }
