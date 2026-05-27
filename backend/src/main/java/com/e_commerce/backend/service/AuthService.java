@@ -1,6 +1,7 @@
 package com.e_commerce.backend.service;
 
 
+import com.e_commerce.backend.dto.LoginRequest;
 import com.e_commerce.backend.dto.RegisterRequest;
 import com.e_commerce.backend.entity.User;
 import com.e_commerce.backend.repository.UserRepository;
@@ -34,5 +35,6 @@ public class AuthService {
         }
         return jwtUtil.generatedToken(user.getEmail());
     }
+
 
 }
