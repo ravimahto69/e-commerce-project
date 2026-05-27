@@ -1,14 +1,12 @@
 package com.e_commerce.backend.dto;
 
 
-import lombok.*;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Data
-public class LoginRequest {
+public class RegisterRequest {
+    private String name;
     private String email;
     private String password;
+
 }
