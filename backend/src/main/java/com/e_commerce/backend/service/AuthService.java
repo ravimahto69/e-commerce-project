@@ -19,7 +19,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder passwordEncoder;
 
     public AuthResponse register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
