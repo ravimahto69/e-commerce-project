@@ -8,8 +8,10 @@ import Cart from './pages/Cart'
 import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
 import OrderHistory from './pages/OrderHistory'
+import Login from './pages/Login'
 
 import { Routes, Route } from 'react-router-dom'
+import Register from './pages/Register'
 
 const App = () => {
   const sampleProduct = {
@@ -30,6 +32,8 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
       <Footer />
     </div>
