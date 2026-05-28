@@ -14,13 +14,7 @@ import { Routes, Route } from 'react-router-dom'
 import Register from './pages/Register'
 
 const App = () => {
-  const sampleProduct = {
-    id: 1,
-    name: 'Wireless Headphones',
-    description: 'Premium sound with deep bass and long battery life.',
-    price: 2999,
-  }
-
+  
   return (
     <div>
       <Header />
