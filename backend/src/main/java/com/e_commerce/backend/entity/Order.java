@@ -17,9 +17,16 @@ public class Order {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
-        private long userId;
-        private double totalAmount;
+        @Column(name = "id")
+        private Long id;
+        @Column(name = "user_id")
+        private Long userId;
+        @Column(name = "total_amount")
+        private Double totalAmount;
+        @Column(name = "customer_name")
+        private String customerName;
+        private String address;
+        @Column(name = "phone")
+        private String phoneNumber;
         private String status = "PLACED";
-
 }

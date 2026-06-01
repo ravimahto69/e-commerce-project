@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponse> handleBadRequest(Exception ex, HttpServletRequest request) {
         ErrorResponse body = new ErrorResponse(
-                "Bad request: invalid input",
+            ex.getMessage(),
                 "BAD_REQUEST",
                 HttpStatus.BAD_REQUEST.value(),
                 request.getRequestURI(),
