@@ -20,5 +20,6 @@ public class User {
     private String name;
     private String email;
     private String password;
+    @Column(nullable = false)
     private String role = "USER";
 }
