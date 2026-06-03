@@ -29,6 +29,16 @@ const Login = () => {
 
             localStorage.setItem("token", response.data.token);
 
+            // fetch current user info (id, name, email) and store userId
+            try {
+                const me = await API.get('/auth/me');
+                if (me && me.data && me.data.id) {
+                    localStorage.setItem('userId', String(me.data.id));
+                }
+            } catch (err) {
+                console.warn('Could not fetch current user', err);
+            }
+
             alert("Login Successful");
 
             navigate("/products");

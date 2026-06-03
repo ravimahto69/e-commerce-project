@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import AddToControls from "./AddToControls";
 
 const ProductCard = ({ product = {} }) => {
+
   const { id, name, description, price } = product;
 
   return (
@@ -11,6 +13,7 @@ const ProductCard = ({ product = {} }) => {
         padding: "20px",
       }}
     >
+
       <h3>{name || "Product Name"}</h3>
 
       <p>{description || "No description available."}</p>
@@ -20,6 +23,9 @@ const ProductCard = ({ product = {} }) => {
       <Link to={id ? `/products/${id}` : "/products"}>
         View Details
       </Link>
+
+      <AddToControls productId={id} />
+
     </div>
   );
 };
