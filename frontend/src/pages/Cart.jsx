@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
 
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
 
   const userId = 1;
@@ -42,6 +44,12 @@ function Cart() {
 
         </div>
       ))}
+
+      {cartItems.length > 0 && (
+        <button onClick={() => navigate("/checkout")}>
+          Proceed to Checkout
+        </button>
+      )}
     </div>
   );
 }

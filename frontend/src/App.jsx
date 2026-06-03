@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductsDeatils'
 import Cart from './pages/Cart'
 import Wishlist from './pages/Wishlist'
 import Checkout from './pages/Checkout'
+import OrderSuccess from './pages/OrderSuccess'
 import OrderHistory from './pages/OrderHistory'
 import Login from './pages/Login'
 
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<OrderSuccess />} />
         <Route path="/orders" element={<OrderHistory />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

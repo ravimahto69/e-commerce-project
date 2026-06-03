@@ -14,12 +14,20 @@ function Wishlist() {
     setItems(res.data);
   };
 
+  const removeItem = async (id) => {
+    await API.delete(`/wishlist/${id}`);
+    fetchWishlist();
+  };
+
   return (
     <div>
       <h1>Wishlist</h1>
       {items.map(item => (
         <div key={item.id}>
           <h3>Product ID: {item.productId}</h3>
+          <button onClick={() => removeItem(item.id)}>
+            Remove from Wishlist
+          </button>
         </div>
       ))}
     </div>

@@ -24,4 +24,10 @@ public class WishListController {
     public List<WishListItem> getWishList(@PathVariable Long id) {
         return wishListService.getWishList(id   );
     }
+
+    @DeleteMapping("/{id}")
+    public String removeWishListItem(@PathVariable Long id) {
+        wishListService.deleteWishListItem(id);
+        return "Wishlist item removed";
+    }
 }
