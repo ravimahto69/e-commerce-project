@@ -289,6 +289,7 @@ function AdminDashboard() {
           ))
         )}
       </section>
+      
     </div>
   );
 }

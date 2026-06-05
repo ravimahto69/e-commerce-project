@@ -26,8 +26,9 @@ const Login = () => {
         try {
 
             const response = await API.post("/auth/login", data);
-
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.userId);
+            localStorage.setItem("role", response.data.role);
 
             // fetch current user info (id, name, email) and store userId
             try {

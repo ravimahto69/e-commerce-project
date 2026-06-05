@@ -3,52 +3,64 @@ import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
-
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
 
-  const userId = 1;
+  const userId = Number(localStorage.getItem("userId")) || 1;
 
   useEffect(() => {
     fetchCart();
   }, []);
 
   const fetchCart = async () => {
-    const res = await API.get(`/cart/${userId}`);
-    setCartItems(res.data);
+    try {
+      const res = await API.get(`/cart/${userId}`);
+      console.log("Cart Data:", res.data);
+      setCartItems(res.data);
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+    }
   };
 
   const removeItem = async (id) => {
-
-    await API.delete(`/cart/${id}`);
-
-    fetchCart();
+    try {
+      await API.delete(`/cart/${id}`);
+      fetchCart();
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   };
 
   return (
-    <div>
-
+    <div style={{ padding: "20px" }}>
       <h1>Cart Page</h1>
 
-      {cartItems.map(item => (
+      {cartItems.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          {cartItems.map((item) => (
+            <div
+              key={item.id}
+              style={{
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                padding: "10px",
+              }}
+            >
+              <h3>Product ID: {item.productId}</h3>
+              <p>Quantity: {item.quantity}</p>
 
-        <div key={item.id}>
+              <button onClick={() => removeItem(item.id)}>
+                Remove
+              </button>
+            </div>
+          ))}
 
-          <h3>Product ID: {item.productId}</h3>
-
-          <p>Quantity: {item.quantity}</p>
-
-          <button onClick={() => removeItem(item.id)}>
-            Remove
+          <button onClick={() => navigate("/checkout")}>
+            Proceed to Checkout
           </button>
-
-        </div>
-      ))}
-
-      {cartItems.length > 0 && (
-        <button onClick={() => navigate("/checkout")}>
-          Proceed to Checkout
-        </button>
+        </>
       )}
     </div>
   );

@@ -24,19 +24,24 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/register",
-                                "/auth/login",
-                                "/products/**",
-                                "/cart/**",
-                                "/wishlist/**",
-                                "/orders/**",
-                                "/api/admin/**"
-                        ).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+               .authorizeHttpRequests(auth -> auth
 
-                        .anyRequest().authenticated()
+        .requestMatchers(
+                "/auth/register",
+                "/auth/login"
+        ).permitAll()
+
+        .requestMatchers(HttpMethod.GET, "/products/**")
+        .permitAll()
+
+        .requestMatchers("/api/admin/**")
+        .hasAuthority("ADMIN")
+
+        .anyRequest()
+        .authenticated()
+)
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

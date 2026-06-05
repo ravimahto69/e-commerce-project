@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
+import FeatureSection from "./components/FeatureSection";
 
 const App = () => {
   return (
@@ -39,7 +40,7 @@ const App = () => {
           }
         />
       </Routes>
-      <Footer />
+      <FeatureSection/>
     </div>
   );
 };

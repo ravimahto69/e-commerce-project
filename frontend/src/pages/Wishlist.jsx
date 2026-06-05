@@ -3,33 +3,56 @@ import API from "../api/axios";
 
 function Wishlist() {
   const [items, setItems] = useState([]);
-  const userId = 1;
+
+  const userId = Number(localStorage.getItem("userId")) || 1;
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
   const fetchWishlist = async () => {
-    const res = await API.get(`/wishlist/${userId}`);
-    setItems(res.data);
+    try {
+      const res = await API.get(`/wishlist/${userId}`);
+      console.log("Wishlist Data:", res.data);
+      setItems(res.data);
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+    }
   };
 
   const removeItem = async (id) => {
-    await API.delete(`/wishlist/${id}`);
-    fetchWishlist();
+    try {
+      await API.delete(`/wishlist/${id}`);
+      fetchWishlist();
+    } catch (error) {
+      console.error("Error removing wishlist item:", error);
+    }
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h1>Wishlist</h1>
-      {items.map(item => (
-        <div key={item.id}>
-          <h3>Product ID: {item.productId}</h3>
-          <button onClick={() => removeItem(item.id)}>
-            Remove from Wishlist
-          </button>
-        </div>
-      ))}
+
+      {items.length === 0 ? (
+        <p>No items in wishlist.</p>
+      ) : (
+        items.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              border: "1px solid #ccc",
+              marginBottom: "10px",
+              padding: "10px",
+            }}
+          >
+            <h3>Product ID: {item.productId}</h3>
+
+            <button onClick={() => removeItem(item.id)}>
+              Remove from Wishlist
+            </button>
+          </div>
+        ))
+      )}
     </div>
   );
 }

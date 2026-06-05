@@ -1,79 +1,104 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
-    const token = localStorage.getItem("token");
-    const [cartCount, setCartCount] = useState(0);
-    const [wishCount, setWishCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishCount, setWishCount] = useState(0);
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        navigate("/login");
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+
+    setCartCount(0);
+    setWishCount(0);
+
+    navigate("/login");
+  };
+
+  const loadCounts = async () => {
+    const userId = Number(localStorage.getItem("userId"));
+
+    if (!token || !userId) {
+      setCartCount(0);
+      setWishCount(0);
+      return;
     }
 
-    useEffect(() => {
-        const loadCounts = async () => {
-            const userId = Number(localStorage.getItem('userId'));
-            if (!token || !userId) return;
-            try {
-                const [cartRes, wishRes] = await Promise.all([
-                    API.get(`/cart/${userId}`),
-                    API.get(`/wishlist/${userId}`)
-                ]);
-                setCartCount(Array.isArray(cartRes.data) ? cartRes.data.length : 0);
-                setWishCount(Array.isArray(wishRes.data) ? wishRes.data.length : 0);
-            } catch (err) {
-                console.warn('Failed to load counts', err);
-            }
-        }
-        loadCounts();
-    }, [token]);
+    try {
+      const [cartRes, wishRes] = await Promise.all([
+        API.get(`/cart/${userId}`),
+        API.get(`/wishlist/${userId}`),
+      ]);
 
-    return (
-        <div style={{
-            display:"flex",
-            justifyContent:"space-between",
-            padding:"20px",
-            background:"black",
-            color:"white"
-        }}>
+      setCartCount(
+        Array.isArray(cartRes.data) ? cartRes.data.length : 0
+      );
 
-            <h2>E-Commerce</h2>
+      setWishCount(
+        Array.isArray(wishRes.data) ? wishRes.data.length : 0
+      );
+    } catch (err) {
+      console.error("Failed to load counts", err);
+      setCartCount(0);
+      setWishCount(0);
+    }
+  };
 
-            <div style={{
-                display:"flex",
-                gap:"20px",
-                alignItems: 'center'
-            }}>
+  useEffect(() => {
+    loadCounts();
+  }, [token, location.pathname]);
 
-                <Link to="/">Home</Link>
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        background: "black",
+        color: "white",
+      }}
+    >
+      <h2>E-Commerce</h2>
 
-                <Link to="/products">Products</Link>
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          alignItems: "center",
+        }}
+      >
+        <Link to="/">Home</Link>
 
-                <Link to="/cart">Cart ({cartCount})</Link>
+        <Link to="/products">Products</Link>
 
-                <Link to="/wishlist">Wishlist ({wishCount})</Link>
+        <Link to="/cart">Cart ({cartCount})</Link>
 
-                {!token ? (
-                    <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
-                    </>
-                ) : (
-                    <button onClick={logout}>
-                        Logout
-                    </button>
-                )}
+        <Link to="/wishlist">Wishlist ({wishCount})</Link>
 
-            </div>
+        {/* Show only for ADMIN */}
+        {role === "ADMIN" && (
+          <Link to="/admin">Admin Dashboard</Link>
+        )}
 
-        </div>
-    )
-}
+        {!token ? (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        ) : (
+          <button onClick={logout}>Logout</button>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Header;
