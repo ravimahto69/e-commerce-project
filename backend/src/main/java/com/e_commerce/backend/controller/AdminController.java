@@ -5,6 +5,8 @@ import com.e_commerce.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 
 @RestController
 @RequestMapping("/api/admin")
@@ -15,6 +17,7 @@ public class AdminController {
 
     @PostMapping("/products")
     public Product addProduct(@RequestBody Product product){
+        product.setCreatedAt(LocalDateTime.now());
         return productRepository.save(product);
     }
 
@@ -32,6 +35,6 @@ public class AdminController {
         productRepository.deleteById(id);
         return "Product deleted successfully";
     }
-    
+
 
 }

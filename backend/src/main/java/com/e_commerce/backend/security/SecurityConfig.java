@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 "/products/**",
                                 "/cart/**",
                                 "/wishlist/**",
-                                "/orders/**"
+                                "/orders/**",
+                                "/api/admin/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 

@@ -1,21 +1,21 @@
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductsDeatils";
+import Cart from "./pages/Cart";
+import Wishlist from "./pages/Wishlist";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
+import OrderHistory from "./pages/OrderHistory";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import Products from './pages/Products'
-import ProductDetail from './pages/ProductsDeatils'
-import Cart from './pages/Cart'
-import Wishlist from './pages/Wishlist'
-import Checkout from './pages/Checkout'
-import OrderSuccess from './pages/OrderSuccess'
-import OrderHistory from './pages/OrderHistory'
-import Login from './pages/Login'
-
-import { Routes, Route } from 'react-router-dom'
-import Register from './pages/Register'
+import { Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
 
 const App = () => {
-  
   return (
     <div>
       <Header />
@@ -30,11 +30,18 @@ const App = () => {
         <Route path="/orders" element={<OrderHistory />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <Footer />
     </div>
-    
-  )
-}
+  );
+};
 
-export default App
+export default App;
