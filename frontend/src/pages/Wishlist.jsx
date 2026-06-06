@@ -4,19 +4,20 @@ import API from "../api/axios";
 function Wishlist() {
   const [items, setItems] = useState([]);
 
-  const userId = Number(localStorage.getItem("userId")) || 1;
+  const userId = Number(localStorage.getItem("userId"));
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
   const fetchWishlist = async () => {
+    if (!userId) return;
+
     try {
       const res = await API.get(`/wishlist/${userId}`);
-      console.log("Wishlist Data:", res.data);
       setItems(res.data);
     } catch (error) {
-      console.error("Error fetching wishlist:", error);
+      console.error(error);
     }
   };
 
@@ -25,7 +26,7 @@ function Wishlist() {
       await API.delete(`/wishlist/${id}`);
       fetchWishlist();
     } catch (error) {
-      console.error("Error removing wishlist item:", error);
+      console.error(error);
     }
   };
 
@@ -41,13 +42,15 @@ function Wishlist() {
             key={item.id}
             style={{
               border: "1px solid #ccc",
-              marginBottom: "10px",
               padding: "10px",
+              marginBottom: "10px",
             }}
           >
             <h3>Product ID: {item.productId}</h3>
 
-            <button onClick={() => removeItem(item.id)}>
+            <button
+              onClick={() => removeItem(item.id)}
+            >
               Remove from Wishlist
             </button>
           </div>

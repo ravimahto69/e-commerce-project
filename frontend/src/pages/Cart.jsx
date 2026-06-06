@@ -6,16 +6,17 @@ function Cart() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
 
-  const userId = Number(localStorage.getItem("userId")) || 1;
+  const userId = Number(localStorage.getItem("userId"));
 
   useEffect(() => {
-    fetchCart();
+    if (userId) {
+      fetchCart();
+    }
   }, []);
 
   const fetchCart = async () => {
     try {
       const res = await API.get(`/cart/${userId}`);
-      console.log("Cart Data:", res.data);
       setCartItems(res.data);
     } catch (error) {
       console.error("Error fetching cart:", error);
