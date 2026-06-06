@@ -17,7 +17,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("https://e-commerce-project-woad-three.vercel.app/")
+                List.of("https://e-commerce-project-woad-three.vercel.app")
         );
 
         configuration.setAllowedMethods(
