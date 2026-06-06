@@ -21,23 +21,34 @@ public class AuthService {
 
     private final org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder passwordEncoder;
 
-    public AuthResponse register(RegisterRequest request){
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new DuplicateEmailException("Email already exists");
-        }
+   public AuthResponse register(RegisterRequest request) {
 
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(user);
-        return new AuthResponse(
-                "Register successful",
-                user.getName(),
-                user.getEmail(),
-                jwtUtil.generatedToken(user.getEmail())
-        );
+    if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        throw new DuplicateEmailException("Email already exists");
     }
+
+    User user = new User();
+
+    user.setName(request.getName());
+    user.setEmail(request.getEmail());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+    user.setRole(
+            request.getRole() == null || request.getRole().isBlank()
+                    ? "USER"
+                    : request.getRole().toUpperCase()
+    );
+
+    userRepository.save(user);
+
+   return new AuthResponse(
+        "Register successful",
+        user.getName(),
+        user.getEmail(),
+        user.getRole(),
+        jwtUtil.generatedToken(user.getEmail())
+);
+}
     public AuthResponse login(String email ,String password){
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
@@ -47,11 +58,12 @@ public class AuthService {
             throw new InvalidCredentialsException("Invalid email or password");
         }
         return new AuthResponse(
-                "Login successful",
-                user.getName(),
-                user.getEmail(),
-                jwtUtil.generatedToken(user.getEmail())
-        );
+        "Login successful",
+        user.getName(),
+        user.getEmail(),
+        user.getRole(),
+        jwtUtil.generatedToken(user.getEmail())
+);
     }
 
 
