@@ -1,9 +1,9 @@
 import axios from "axios";
 
-console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+console.log("Backend URL:", import.meta.env.REACT_APP_BACKEND_URL);
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "https://shopzen.up.railway.app",
 });
 
 API.interceptors.request.use(
