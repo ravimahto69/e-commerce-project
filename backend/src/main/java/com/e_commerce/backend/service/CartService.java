@@ -28,4 +28,16 @@ public class CartService {
         List<Cart> cartItems = cartRepository.findByUserId(userId);
         cartRepository.deleteAll(cartItems);
     }
+    public Cart updateQuantity(
+        Long cartId,
+        Integer quantity
+) {
+    Cart cart = cartRepository.findById(cartId)
+            .orElseThrow(() ->
+                    new RuntimeException("Cart item not found"));
+
+    cart.setQuantity(quantity);
+
+    return cartRepository.save(cart);
+}
 }

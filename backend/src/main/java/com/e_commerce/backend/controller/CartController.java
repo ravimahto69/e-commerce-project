@@ -36,4 +36,14 @@ public class CartController {
         cartService.deleteCartItem(id);
         return "Item removed from cart";
     }
+    @PutMapping("/{id}")
+public Cart updateQuantity(
+        @PathVariable Long id,
+        @RequestBody Cart cart
+) {
+    return cartService.updateQuantity(
+            id,
+            cart.getQuantity()
+    );
+}
 }

@@ -42,14 +42,13 @@ function Checkout() {
 
         setCartItems(detailedItems);
 
-        const total =
-          detailedItems.reduce(
-            (sum, item) =>
-              sum +
-              (Number(item.product?.price) || 0) *
-                (Number(item.quantity) || 0),
-            0
-          );
+        const total = detailedItems.reduce(
+          (sum, item) =>
+            sum +
+            (Number(item.product?.price) || 0) *
+              (Number(item.quantity) || 0),
+          0
+        );
 
         setForm((prev) => ({
           ...prev,
@@ -71,16 +70,11 @@ function Checkout() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const orderPayload = {
-      ...form,
-      userId,
-    };
-
     try {
-      await API.post(
-        "/orders",
-        orderPayload
-      );
+      await API.post("/orders", {
+        ...form,
+        userId,
+      });
 
       await API.delete(
         `/cart/clear/${userId}`
@@ -110,20 +104,20 @@ function Checkout() {
   return (
     <div className="min-h-screen bg-[#f6f8fb]">
 
-      {/* Hero Section */}
+      {/* Hero */}
 
       <section className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-6 py-12">
 
-          <p className="uppercase tracking-widest text-sm text-slate-500 font-medium">
+          <p className="uppercase tracking-widest text-sm text-slate-500">
             Store
           </p>
 
-          <h1 className="text-6xl font-black text-[#08122f] mt-3">
+          <h1 className="text-5xl md:text-6xl font-black text-[#08122f] mt-2">
             Checkout
           </h1>
 
-          <p className="text-xl text-slate-500 mt-4">
+          <p className="text-lg text-slate-500 mt-3">
             Complete your order securely.
           </p>
 
@@ -138,88 +132,82 @@ function Checkout() {
 
           <div className="lg:col-span-2">
 
-            <div className="bg-white rounded-[32px] border border-gray-200 p-8">
+            <div className="bg-white rounded-[32px] border border-gray-200 p-6">
 
-              <h2 className="text-3xl font-black text-[#08122f] mb-8">
+              <h2 className="text-2xl font-black text-[#08122f] mb-6">
                 Order Summary
               </h2>
 
               {cartItems.length === 0 ? (
-                <div className="text-center py-12">
-
-                  <div className="text-7xl mb-5">
-                    🛒
-                  </div>
-
-                  <h3 className="text-3xl font-bold text-[#08122f]">
+                <div className="text-center py-16">
+                  <h3 className="text-2xl font-bold text-[#08122f]">
                     Your Cart is Empty
                   </h3>
 
-                  <p className="text-slate-500 mt-4">
-                    Add some products before checkout.
+                  <p className="text-slate-500 mt-3">
+                    Add products before checkout.
                   </p>
-
                 </div>
               ) : (
                 <>
-                  <div className="space-y-6">
+                  <div className="space-y-4">
 
                     {cartItems.map((item) => (
                       <div
                         key={item.id}
-                        className="flex flex-col md:flex-row gap-5 border-b border-gray-200 pb-6"
+                        className="
+                          flex
+                          items-center
+                          justify-between
+                          border-b
+                          border-gray-200
+                          pb-4
+                        "
                       >
-                        <img
-                          src={
-                            item.product
-                              ?.imageUrl ||
-                            "https://via.placeholder.com/150"
-                          }
-                          alt={
-                            item.product
-                              ?.name
-                          }
-                          className="w-32 h-32 object-cover rounded-[24px]"
-                        />
+                        <div className="flex items-center gap-4">
 
-                        <div className="flex-1">
-
-                          <h3 className="text-2xl font-bold text-[#08122f]">
-                            {
-                              item.product
-                                ?.name
+                          <img
+                            src={
+                              item.product?.imageUrl ||
+                              "https://via.placeholder.com/100"
                             }
-                          </h3>
+                            alt={item.product?.name}
+                            className="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              object-cover
+                              border
+                              border-gray-200
+                            "
+                          />
 
-                          <p className="text-slate-500 mt-3">
-                            Quantity
-                          </p>
+                          <div>
 
-                          <span className="inline-flex mt-2 bg-slate-100 px-4 py-2 rounded-full font-semibold">
-                            {
-                              item.quantity
-                            }
-                          </span>
+                            <h3 className="font-bold text-lg text-[#08122f]">
+                              {item.product?.name}
+                            </h3>
 
-                          <p className="text-2xl font-black text-[#08122f] mt-4">
-                            ₹
-                            {
-                              item.product
-                                ?.price
-                            }
-                          </p>
+                            <p className="text-sm text-slate-500">
+                              Qty: {item.quantity}
+                            </p>
+
+                          </div>
 
                         </div>
 
-                        <div className="text-2xl font-black text-[#08122f]">
-                          ₹
-                          {(Number(
-                            item.product
-                              ?.price
-                          ) || 0) *
-                            (Number(
-                              item.quantity
-                            ) || 0)}
+                        <div className="text-right">
+
+                          <p className="font-bold text-lg text-[#08122f]">
+                            ₹
+                            {(Number(
+                              item.product?.price
+                            ) || 0) *
+                              (Number(
+                                item.quantity
+                              ) || 0)}
+                          </p>
+
                         </div>
 
                       </div>
@@ -227,20 +215,18 @@ function Checkout() {
 
                   </div>
 
-                  <div className="flex justify-between pt-8 mt-8 border-t border-gray-200">
+                  <div className="flex justify-between items-center pt-6 mt-6 border-t border-gray-200">
 
-                    <span className="text-2xl font-bold text-[#08122f]">
+                    <span className="text-xl font-bold text-[#08122f]">
                       Total
                     </span>
 
                     <span className="text-3xl font-black text-[#08122f]">
-                      ₹
-                      {
-                        form.totalAmount
-                      }
+                      ₹{form.totalAmount}
                     </span>
 
                   </div>
+
                 </>
               )}
 
@@ -252,29 +238,26 @@ function Checkout() {
 
           <div>
 
-            <div className="bg-white rounded-[32px] border border-gray-200 p-8 sticky top-6">
+            <div className="bg-white rounded-[32px] border border-gray-200 p-6 sticky top-6">
 
-              <h2 className="text-3xl font-black text-[#08122f] mb-8">
+              <h2 className="text-2xl font-black text-[#08122f] mb-6">
                 Shipping Details
               </h2>
 
               <form
                 onSubmit={handleSubmit}
-                className="space-y-5"
+                className="space-y-4"
               >
 
                 <input
                   type="text"
                   required
-                  value={
-                    form.customerName
-                  }
+                  value={form.customerName}
                   onChange={(e) =>
                     setForm({
                       ...form,
                       customerName:
-                        e.target
-                          .value,
+                        e.target.value,
                     })
                   }
                   placeholder="Full Name"
@@ -284,15 +267,12 @@ function Checkout() {
                 <textarea
                   rows="4"
                   required
-                  value={
-                    form.address
-                  }
+                  value={form.address}
                   onChange={(e) =>
                     setForm({
                       ...form,
                       address:
-                        e.target
-                          .value,
+                        e.target.value,
                     })
                   }
                   placeholder="Delivery Address"
@@ -307,32 +287,24 @@ function Checkout() {
                     setForm({
                       ...form,
                       phone:
-                        e.target
-                          .value,
+                        e.target.value,
                     })
                   }
                   placeholder="Phone Number"
                   className="w-full border border-gray-200 rounded-2xl p-4 focus:outline-none focus:border-[#08122f]"
                 />
 
-                <div className="bg-slate-50 rounded-[24px] p-5 border border-gray-200">
+                <div className="bg-slate-50 rounded-[24px] border border-gray-200 p-5">
 
                   <div className="flex justify-between mb-3">
+                    <span>Items</span>
                     <span>
-                      Items
-                    </span>
-
-                    <span>
-                      {
-                        cartItems.length
-                      }
+                      {cartItems.length}
                     </span>
                   </div>
 
                   <div className="flex justify-between mb-3">
-                    <span>
-                      Shipping
-                    </span>
+                    <span>Shipping</span>
 
                     <span className="font-semibold">
                       Free
@@ -341,15 +313,12 @@ function Checkout() {
 
                   <div className="border-t border-gray-200 pt-4 flex justify-between">
 
-                    <span className="font-bold text-xl">
+                    <span className="font-bold text-lg">
                       Total
                     </span>
 
                     <span className="font-black text-2xl text-[#08122f]">
-                      ₹
-                      {
-                        form.totalAmount
-                      }
+                      ₹{form.totalAmount}
                     </span>
 
                   </div>
@@ -359,19 +328,18 @@ function Checkout() {
                 <button
                   type="submit"
                   disabled={
-                    cartItems.length ===
-                    0
+                    cartItems.length === 0
                   }
                   className="
-                  w-full
-                  bg-[#08122f]
-                  text-white
-                  py-4
-                  rounded-2xl
-                  font-semibold
-                  hover:opacity-90
-                  transition
-                  disabled:opacity-50
+                    w-full
+                    bg-[#08122f]
+                    text-white
+                    py-4
+                    rounded-2xl
+                    font-semibold
+                    hover:opacity-90
+                    transition
+                    disabled:opacity-50
                   "
                 >
                   Place Order
@@ -390,4 +358,4 @@ function Checkout() {
   );
 }
 
-export default Checkout;
+export default Checkout;  

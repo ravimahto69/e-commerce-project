@@ -5,6 +5,8 @@ import com.e_commerce.backend.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -14,5 +16,8 @@ public class OrderService {
     public Order placeOrder(Order order) {
         // Here you can add any business logic related to placing an order
         return orderRepository.save(order);
+    }
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
     }
 }

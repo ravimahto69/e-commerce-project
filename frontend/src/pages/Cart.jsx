@@ -7,6 +7,7 @@ function Cart() {
 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatingQuantity, setUpdatingQuantity] = useState({}); // Track which item is being updated
 
   const userId = Number(localStorage.getItem("userId"));
 
@@ -55,6 +56,28 @@ function Cart() {
       console.error("Error fetching cart:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateQuantity = async (id, newQuantity) => {
+    if (newQuantity < 1) return; // Prevent quantity less than 1
+    
+    try {
+      setUpdatingQuantity(prev => ({ ...prev, [id]: true }));
+      
+      await API.put(`/cart/${id}`, { quantity: newQuantity });
+      
+      // Update local state
+      setCartItems((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      alert("Failed to update quantity");
+    } finally {
+      setUpdatingQuantity(prev => ({ ...prev, [id]: false }));
     }
   };
 
@@ -199,8 +222,59 @@ function Cart() {
                       Quantity
                     </p>
 
-                    <div className="inline-flex mt-2 bg-slate-100 px-4 py-2 rounded-full font-semibold text-[#08122f]">
-                      {item.quantity}
+                    {/* Quantity Controls */}
+                    <div className="flex items-center gap-3 mt-2">
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        disabled={updatingQuantity[item.id] || item.quantity <= 1}
+                        className="
+                          bg-slate-100 
+                          hover:bg-slate-200 
+                          disabled:opacity-50 
+                          disabled:cursor-not-allowed
+                          text-[#08122f] 
+                          font-bold 
+                          px-4 
+                          py-2 
+                          rounded-full
+                          transition
+                          w-10
+                          h-10
+                          flex
+                          items-center
+                          justify-center
+                        "
+                      >
+                        -
+                      </button>
+                      
+                      <span className="bg-slate-100 px-6 py-2 rounded-full font-semibold text-[#08122f] min-w-[60px] text-center">
+                        {updatingQuantity[item.id] ? "..." : item.quantity}
+                      </span>
+                      
+                      <button
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        disabled={updatingQuantity[item.id]}
+                        className="
+                          bg-slate-100 
+                          hover:bg-slate-200 
+                          disabled:opacity-50 
+                          disabled:cursor-not-allowed
+                          text-[#08122f] 
+                          font-bold 
+                          px-4 
+                          py-2 
+                          rounded-full
+                          transition
+                          w-10
+                          h-10
+                          flex
+                          items-center
+                          justify-center
+                        "
+                      >
+                        +
+                      </button>
                     </div>
 
                     <h3 className="text-3xl font-black text-[#08122f] mt-5">
@@ -267,7 +341,7 @@ function Cart() {
                     </span>
 
                     <span className="font-semibold text-[#08122f]">
-                      {cartItems.length}
+                      {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
                     </span>
                   </div>
 
