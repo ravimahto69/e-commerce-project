@@ -1,40 +1,23 @@
 function FeatureSection() {
   return (
-    <div
-      style={{
-        background: "#111827",
-        color: "white",
-        padding: "60px",
-      }}
-    >
-      <h2 style={{ textAlign: "center" }}>
-        Why Choose Us?
-      </h2>
+   <section className="bg-[#08122f] text-white py-32">
+  <div className="max-w-5xl mx-auto px-6">
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          marginTop: "40px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <h3> Fast Delivery</h3>
-          <p>Quick and reliable shipping.</p>
-        </div>
+    <h2 className="text-6xl md:text-8xl font-black leading-none">
+      Fast.
+      <br />
+      Secure.
+      <br />
+      Premium.
+    </h2>
 
-        <div>
-          <h3> Secure Payments</h3>
-          <p>100% protected transactions.</p>
-        </div>
+    <p className="text-slate-400 text-xl mt-10 max-w-xl">
+      Everything you need for a modern
+      shopping experience.
+    </p>
 
-        <div>
-          <h3> Quality Products</h3>
-          <p>Trusted by thousands of customers.</p>
-        </div>
-      </div>
-    </div>
+  </div>
+</section>
   );
 }
 

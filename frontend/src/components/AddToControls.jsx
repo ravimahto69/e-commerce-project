@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import { ShoppingCart, Heart } from "lucide-react";
 
-const AddToControls = ({ productId, initialQuantity = 1, onAdded }) => {
-  const [quantity, setQuantity] = useState(initialQuantity);
+const AddToControls = ({
+  productId,
+  initialQuantity = 1,
+  onAdded,
+}) => {
+  const [quantity] = useState(initialQuantity);
 
   const navigate = useNavigate();
 
@@ -17,7 +22,9 @@ const AddToControls = ({ productId, initialQuantity = 1, onAdded }) => {
     }
 
     try {
-      const userId = Number(localStorage.getItem("userId"));
+      const userId = Number(
+        localStorage.getItem("userId")
+      );
 
       await API.post("/cart", {
         userId,
@@ -25,9 +32,8 @@ const AddToControls = ({ productId, initialQuantity = 1, onAdded }) => {
         quantity,
       });
 
-      if (onAdded) onAdded("cart");
-
-      alert("Added to Cart");
+      onAdded?.("cart");
+      alert("Added To Cart");
     } catch (err) {
       console.error(err);
       alert("Failed to add to cart");
@@ -44,16 +50,17 @@ const AddToControls = ({ productId, initialQuantity = 1, onAdded }) => {
     }
 
     try {
-      const userId = Number(localStorage.getItem("userId"));
+      const userId = Number(
+        localStorage.getItem("userId")
+      );
 
       await API.post("/wishlist", {
         userId,
         productId,
       });
 
-      if (onAdded) onAdded("wishlist");
-
-      alert("Added to Wishlist");
+      onAdded?.("wishlist");
+      alert("Added To Wishlist");
     } catch (err) {
       console.error(err);
       alert("Failed to add to wishlist");
@@ -61,32 +68,41 @@ const AddToControls = ({ productId, initialQuantity = 1, onAdded }) => {
   };
 
   return (
-    <div style={{ marginTop: 12 }}>
-      <label>
-        Qty:
-        <input
-          type="number"
-          min="1"
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value) || 1)}
-          style={{ width: 60, marginLeft: 8 }}
-        />
-      </label>
+    <div className="mt-4 flex justify-center gap-3">
 
-      <button
-        style={{ marginLeft: 8 }}
-        onClick={addToCart}
-      >
-        Add To Cart
-      </button>
+  <button
+    onClick={addToCart}
+    className="
+      w-12
+      h-12
+      rounded-2xl
+      bg-[#08122f]
+      text-white
+      flex
+      items-center
+      justify-center
+    "
+  >
+    <ShoppingCart size={18} />
+  </button>
 
-      <button
-        style={{ marginLeft: 8 }}
-        onClick={addToWishlist}
-      >
-        Add To Wishlist
-      </button>
-    </div>
+  <button
+    onClick={addToWishlist}
+    className="
+      w-12
+      h-12
+      rounded-2xl
+      border
+      border-gray-200
+      flex
+      items-center
+      justify-center
+    "
+  >
+    <Heart size={18} />
+  </button>
+
+</div>
   );
 };
 

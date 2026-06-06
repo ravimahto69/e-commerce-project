@@ -1,104 +1,162 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import API from "../api/axios";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ShoppingBag,
+  Heart,
+  ShoppingCart,
+  LogOut,
+} from "lucide-react";
 
-const Header = () => {
+function Header() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  const [cartCount, setCartCount] = useState(0);
-  const [wishCount, setWishCount] = useState(0);
-
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-
-    setCartCount(0);
-    setWishCount(0);
-
+    localStorage.clear();
     navigate("/login");
   };
 
-  const loadCounts = async () => {
-    const userId = Number(localStorage.getItem("userId"));
-
-    if (!token || !userId) {
-      setCartCount(0);
-      setWishCount(0);
-      return;
-    }
-
-    try {
-      const [cartRes, wishRes] = await Promise.all([
-        API.get(`/cart/${userId}`),
-        API.get(`/wishlist/${userId}`),
-      ]);
-
-      setCartCount(
-        Array.isArray(cartRes.data) ? cartRes.data.length : 0
-      );
-
-      setWishCount(
-        Array.isArray(wishRes.data) ? wishRes.data.length : 0
-      );
-    } catch (err) {
-      console.error("Failed to load counts", err);
-      setCartCount(0);
-      setWishCount(0);
-    }
-  };
-
-  useEffect(() => {
-    loadCounts();
-  }, [token, location.pathname]);
-
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "20px",
-        background: "black",
-        color: "white",
-      }}
-    >
-      <h2>E-Commerce</h2>
+    <div className="sticky top-4 z-50 px-6">
 
       <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          alignItems: "center",
-        }}
+        className="
+        max-w-7xl
+        mx-auto
+        bg-white/90
+        backdrop-blur-xl
+        border
+        border-gray-200
+        rounded-full
+        px-8
+        py-4
+        shadow-sm
+        "
       >
-        <Link to="/">Home</Link>
+        <div className="flex items-center justify-between">
 
-        <Link to="/products">Products</Link>
+          {/* Logo */}
 
-        <Link to="/cart">Cart ({cartCount})</Link>
+          <Link
+            to="/"
+            className="flex items-center gap-2"
+          >
+            <ShoppingBag
+              className="text-[#08122f]"
+              size={24}
+            />
 
-        <Link to="/wishlist">Wishlist ({wishCount})</Link>
+            <span className="text-xl font-black text-[#08122f]">
+              E-Commerce
+            </span>
+          </Link>
 
-        {/* Show only for ADMIN */}
-        {role === "ADMIN" && (
-          <Link to="/admin">Admin Dashboard</Link>
-        )}
+          {/* Center Nav */}
 
-        {!token ? (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        ) : (
-          <button onClick={logout}>Logout</button>
-        )}
+          <div className="hidden md:flex items-center gap-10">
+
+            <Link
+              to="/"
+              className="text-slate-600 hover:text-[#08122f]"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/products"
+              className="text-slate-600 hover:text-[#08122f]"
+            >
+              Products
+            </Link>
+
+            {role === "ADMIN" && (
+              <Link
+                to="/admin"
+                className="text-slate-600 hover:text-[#08122f]"
+              >
+                Dashboard
+              </Link>
+            )}
+
+          </div>
+
+          {/* Actions */}
+
+          <div className="flex items-center gap-3">
+
+            <Link
+              to="/wishlist"
+              className="
+              w-11
+              h-11
+              rounded-full
+              bg-slate-100
+              flex
+              items-center
+              justify-center
+              hover:bg-slate-200
+              "
+            >
+              <Heart size={18} />
+            </Link>
+
+            <Link
+              to="/cart"
+              className="
+              w-11
+              h-11
+              rounded-full
+              bg-slate-100
+              flex
+              items-center
+              justify-center
+              hover:bg-slate-200
+              "
+            >
+              <ShoppingCart size={18} />
+            </Link>
+
+            {!token ? (
+              <Link
+                to="/login"
+                className="
+                bg-[#08122f]
+                text-white
+                px-5
+                py-2.5
+                rounded-full
+                font-medium
+                "
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={logout}
+                className="
+                w-11
+                h-11
+                rounded-full
+                border
+                border-red-200
+                flex
+                items-center
+                justify-center
+                text-red-500
+                hover:bg-red-50
+                "
+              >
+                <LogOut size={18} />
+              </button>
+            )}
+
+          </div>
+
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Header;

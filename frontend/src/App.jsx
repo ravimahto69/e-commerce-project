@@ -16,6 +16,7 @@ import AdminProtectedRoute from "./components/ProtectedRoute";
 
 import { Routes, Route } from "react-router-dom";
 import FeatureSection from "./components/FeatureSection";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -80,7 +81,8 @@ const App = () => {
           }
         />
       </Routes>
-      <FeatureSection></FeatureSection>
+      
+      <Footer />
     </>
   );
 };

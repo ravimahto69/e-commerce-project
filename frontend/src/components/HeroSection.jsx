@@ -2,118 +2,108 @@ import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
-    <section
-      style={{
-        minHeight: "85vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background:
-          "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)",
-        color: "white",
-        padding: "40px 20px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "900px",
-          textAlign: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "4rem",
-            fontWeight: "bold",
-            marginBottom: "20px",
-            lineHeight: "1.2",
-          }}
-        >
-          Shop Smarter,
-          <br />
-          Live Better
-        </h1>
+    <section className="bg-[#f6f8fb]">
 
-        <p
-          style={{
-            fontSize: "1.3rem",
-            color: "#cbd5e1",
-            marginBottom: "35px",
-            lineHeight: "1.7",
-          }}
-        >
-          Discover premium products, exclusive deals,
-          and a seamless shopping experience.
-          Everything you need, delivered to your doorstep.
-        </p>
+      <div className="max-w-7xl mx-auto px-6 py-32">
 
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <Link to="/products">
-            <button
-              style={{
-                background: "#2563eb",
-                color: "white",
-                padding: "14px 32px",
-                border: "none",
-                borderRadius: "10px",
-                fontSize: "16px",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
-            >
-              🛒 Shop Now
-            </button>
-          </Link>
+        <div className="max-w-4xl">
 
-          <Link to="/register">
-            <button
-              style={{
-                background: "transparent",
-                color: "white",
-                padding: "14px 32px",
-                border: "2px solid white",
-                borderRadius: "10px",
-                fontSize: "16px",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
-            >
-              Create Account
-            </button>
-          </Link>
+          <p className="uppercase tracking-[0.3em] text-sm text-slate-500">
+            Modern Commerce
+          </p>
+
+          <h1 className="text-6xl md:text-8xl font-black text-[#08122f] leading-none mt-6">
+            Shop
+            <br />
+            Without
+            <br />
+            Limits.
+          </h1>
+
+          <p className="text-xl text-slate-500 max-w-2xl mt-10 leading-relaxed">
+            Discover carefully curated products,
+            premium quality, and an effortless
+            shopping experience designed for modern living.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-12">
+
+            <Link to="/products">
+              <button
+                className="
+                bg-[#08122f]
+                text-white
+                px-8
+                py-4
+                rounded-2xl
+                font-semibold
+                hover:opacity-90
+                transition
+                "
+              >
+                Explore Products
+              </button>
+            </Link>
+
+            <Link to="/register">
+              <button
+                className="
+                border
+                border-gray-300
+                px-8
+                py-4
+                rounded-2xl
+                font-semibold
+                hover:bg-white
+                transition
+                "
+              >
+                Create Account
+              </button>
+            </Link>
+
+          </div>
+
         </div>
 
-        <div
-          style={{
-            marginTop: "60px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "50px",
-            flexWrap: "wrap",
-          }}
-        >
+        {/* Bottom Stats */}
+
+        <div className="grid grid-cols-3 gap-8 mt-32 border-t border-gray-200 pt-12">
+
           <div>
-            <h2>10K+</h2>
-            <p>Happy Customers</p>
+            <h2 className="text-4xl font-black text-[#08122f]">
+              10K+
+            </h2>
+
+            <p className="text-slate-500 mt-2">
+              Happy Customers
+            </p>
           </div>
 
           <div>
-            <h2>500+</h2>
-            <p>Products</p>
+            <h2 className="text-4xl font-black text-[#08122f]">
+              500+
+            </h2>
+
+            <p className="text-slate-500 mt-2">
+              Premium Products
+            </p>
           </div>
 
           <div>
-            <h2>24/7</h2>
-            <p>Customer Support</p>
+            <h2 className="text-4xl font-black text-[#08122f]">
+              24/7
+            </h2>
+
+            <p className="text-slate-500 mt-2">
+              Customer Support
+            </p>
           </div>
+
         </div>
+
       </div>
+
     </section>
   );
 }
