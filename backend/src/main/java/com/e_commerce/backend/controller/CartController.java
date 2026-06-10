@@ -1,6 +1,5 @@
 package com.e_commerce.backend.controller;
 
-
 import com.e_commerce.backend.entity.Cart;
 import com.e_commerce.backend.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class CartController {
+
     private final CartService cartService;
 
     @PostMapping
-    public Cart addToCart(@RequestBody  Cart cart) {
+    public Cart addToCart(@RequestBody Cart cart) {
         return cartService.addToCard(cart);
     }
 
@@ -36,14 +36,12 @@ public class CartController {
         cartService.deleteCartItem(id);
         return "Item removed from cart";
     }
+
     @PutMapping("/{id}")
-public Cart updateQuantity(
-        @PathVariable Long id,
-        @RequestBody Cart cart
-) {
-    return cartService.updateQuantity(
-            id,
-            cart.getQuantity()
-    );
-}
+    public Cart updateQuantity(
+            @PathVariable Long id,
+            @RequestBody Cart cart
+    ) {
+        return cartService.updateQuantity(id, cart.getQuantity());
+    }
 }
